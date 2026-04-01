@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getJwtSecret = getJwtSecret;
 exports.getCorsOrigins = getCorsOrigins;
+exports.getRateLimitWindowMs = getRateLimitWindowMs;
+exports.getRateLimitMax = getRateLimitMax;
 function getJwtSecret() {
     const s = process.env.JWT_SECRET;
     if (s && s.length >= 16) {
@@ -18,5 +20,13 @@ function getCorsOrigins() {
         .split(',')
         .map((o) => o.trim())
         .filter(Boolean);
+}
+function getRateLimitWindowMs() {
+    const n = Number(process.env.RATE_LIMIT_WINDOW_MS);
+    return Number.isFinite(n) && n > 0 ? n : 15 * 60 * 1000;
+}
+function getRateLimitMax() {
+    const n = Number(process.env.RATE_LIMIT_MAX);
+    return Number.isFinite(n) && n > 0 ? n : 100;
 }
 //# sourceMappingURL=env.js.map

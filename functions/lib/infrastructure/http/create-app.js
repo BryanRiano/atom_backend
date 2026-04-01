@@ -7,6 +7,7 @@ exports.createApp = createApp;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
+const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const env_1 = require("../config/env");
 const auth_middleware_1 = require("./middleware/auth.middleware");
 const error_middleware_1 = require("./middleware/error.middleware");
@@ -15,6 +16,13 @@ const auth_routes_1 = require("./routes/auth.routes");
 const task_routes_1 = require("./routes/task.routes");
 function createApp(factory, tokens) {
     const app = (0, express_1.default)();
+    app.set('trust proxy', 1);
+    app.use((0, express_rate_limit_1.default)({
+        windowMs: (0, env_1.getRateLimitWindowMs)(),
+        max: (0, env_1.getRateLimitMax)(),
+        standardHeaders: true,
+        legacyHeaders: false,
+    }));
     app.use((0, helmet_1.default)());
     app.use((0, cors_1.default)({
         origin: (0, env_1.getCorsOrigins)(),

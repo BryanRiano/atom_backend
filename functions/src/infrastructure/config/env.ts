@@ -16,3 +16,13 @@ export function getCorsOrigins(): string[] {
     .map((o) => o.trim())
     .filter(Boolean);
 }
+
+export function getRateLimitWindowMs(): number {
+  const n = Number(process.env.RATE_LIMIT_WINDOW_MS);
+  return Number.isFinite(n) && n > 0 ? n : 15 * 60 * 1000;
+}
+
+export function getRateLimitMax(): number {
+  const n = Number(process.env.RATE_LIMIT_MAX);
+  return Number.isFinite(n) && n > 0 ? n : 100;
+}
